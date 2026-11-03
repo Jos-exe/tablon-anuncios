@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titulo %}Anuncios{% endblock %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Tablon de anuncios</h2>
+    <a href="{{ url_for('anuncios.nuevo') }}" class="btn btn-primary">Nuevo anuncio</a>
+</div>
+
+{% for a in anuncios %}
+<div class="card mb-3">
+    <div class="card-header d-flex justify-content-between">
+        <strong>{{ a.titulo }}</strong>
+        <span class="badge bg-primary">{{ a.categoria.nombre }}</span>
+    </div>
+    <div class="card-body">
+        <p class="mb-2">{{ a.contenido }}</p>
+        <small class="text-muted">Por {{ a.usuario.nombre }} · {{ a.fecha.strftime('%d/%m/%Y %H:%M') }}</small>
+    </div>
+    <div class="card-footer">
+        <a href="{{ url_for('anuncios.editar', id=a.id) }}" class="btn btn-sm btn-warning">Editar</a>
+        <form method="post" action="{{ url_for('anuncios.eliminar', id=a.id) }}" class="d-inline"
+              onsubmit="return confirm('¿Eliminar este anuncio?')">
+            <button class="btn btn-sm btn-danger">Eliminar</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<p class="text-center">No hay anuncios publicados</p>
+{% endfor %}
+{% endblock %}
